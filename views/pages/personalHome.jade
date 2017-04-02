@@ -1,0 +1,179 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .col-md-8.col-md-offset-2
+        .main-top
+          a.avatar(href="/student/personal_home/"+viewStudent._id)
+            img(src="#{viewStudent.avatar}")
+          .title
+            a.name #{viewStudent.nickname}
+          .info
+            ul
+              li
+                .meta-block
+                  p #{have_help_others.length}
+                  span 已帮助
+              li
+                .meta-block
+                  p #{have_helps.length}
+                  span 被帮助
+        ul.list-menu
+          li.active(data-index=0)
+            i.fa.fa-search
+            | 正在求助
+          li(data-index=1)
+            i.fa.fa-search
+            | 已求助
+          li(data-index=2)
+            i.fa.fa-search
+            | 正在帮助
+          li(data-index=3)
+            i.fa.fa-search
+            | 已帮助
+        .list-container
+          ul.help-list
+            if helpings.length == 0
+              p.hint-info 现在没有求助！
+            if helpings.length>0
+              each help in helpings
+                li(class="#{help.haveImg}")
+                  if help.haveImg
+                    a.wrap-img(target="_blank",href="")
+                      img(src="#{help.coverImgPath}")
+                  .content
+                    .author
+                      a.avatar(target="_blank",href="/student/personal_home/"+viewStudent._id)
+                        img(src="#{viewStudent.avatar}",alt="")
+                      .name
+                        a.blue-link(target="_blank",href="/student/personal_home/"+viewStudent._id) #{viewStudent.nickname}
+                        span.time #{help.meta.updateAt}
+                      if student._id.toString() === help.publisher._id.toString()
+                      .edit
+                        a(href="/help/edit/"+help._id) 编辑
+                        span.del(data-id="#{help._id}") 删除
+                    a.title(target="_blank",href="/help/detail/"+help._id) #{help.title}
+                    - var filterImg = /<img.+?>/g;
+                    - var newContent = help.content.replace(filterImg,'');
+                    p.abstract !{newContent.slice(0,100)}...
+                    .meta
+                      a(target="_blank",href="/help/detail/"+help._id)
+                        i.fa.fa-eye
+                        | #{help.pv}
+                      a(target="_blank",href="/help/detail/"+help._id+"#comments")
+                        i.fa.fa-comment
+                        | 0
+                      span
+                        i.fa.fa-heart
+                        | #{help.receiveComforts.length}
+                      span
+                        i.fa.fa-arrow-circle-up
+                        | #{help.receiveUps.length}
+          ul.help-list.hide
+            if have_helps.length == 0
+              p.hint-info 还没有任何求助信息！
+            if have_helps.length>0
+              each help in have_helps
+                li(id="#{help._id}",class="#{help.haveImg}",data-help-id="#{help._id}")
+                  span.finish-tag 已完成
+                  if help.haveImg
+                    a.wrap-img(target="_blank",href="")
+                      img(src="#{help.coverImgPath}")
+                  .content
+                    .author
+                      a.avatar(target="_blank",href="/student/personal_home/"+viewStudent._id)
+                        img(src="#{viewStudent.avatar}",alt="")
+                      .name
+                        a.blue-link(target="_blank",href="/student/personal_home/"+viewStudent._id) #{viewStudent.nickname}
+                        span.time #{help.meta.createAt}
+                      if student._id.toString() === help.publisher._id.toString()
+                      .edit
+                        a(href="/help/edit/"+help._id) 编辑
+                        span.del 删除
+                    a.title(target="_blank",href="/help/detail/"+help._id) #{help.title}
+                    - var filterImg = /<img.+?>/g;
+                    - var newContent = help.content.replace(filterImg,'');
+                    p.abstract !{newContent.slice(0,100)}...
+                    .meta
+                      a(target="_blank",href="/help/detail/"+help._id)
+                        i.fa.fa-eye
+                        | #{help.pv}
+                      a(target="_blank",href="/help/detail/"+help._id+"#comments")
+                        i.fa.fa-comment
+                        | 0
+                      span
+                        i.fa.fa-heart
+                        | #{help.receiveComforts.length}
+                      span
+                        i.fa.fa-arrow-circle-up
+                        | #{help.receiveUps.length}
+          ul.help-list.hide
+            if helping_others.length == 0
+              p.hint-info 现在没有帮助其他人！
+            if helping_others.length>0
+              each help in helping_others
+                li(id="#{help._id}",class="#{help.haveImg}",data-help-id="#{help._id}")
+                  if help.haveImg
+                    a.wrap-img(target="_blank",href="")
+                      img(src="#{help.coverImgPath}")
+                  .content
+                    .author
+                      a.avatar(target="_blank",href="/student/personal_home/"+help.publisher._id)
+                        img(src="#{help.publisher.avatar}",alt="")
+                      .name
+                        a.blue-link(target="_blank",href="/student/personal_home/"+help.publisher._id) #{help.publisher.nickname}
+                        span.time #{help.meta.createAt}
+                    a.title(target="_blank",href="/help/detail/"+help._id) #{help.title}
+                    - var filterImg = /<img.+?>/g;
+                    - var newContent = help.content.replace(filterImg,'');
+                    p.abstract !{newContent.slice(0,100)}...
+                    .meta
+                      a(target="_blank",href="/help/detail/"+help._id)
+                        i.fa.fa-eye
+                        | #{help.pv}
+                      a(target="_blank",href="/help/detail/"+help._id+"#comments")
+                        i.fa.fa-comment
+                        | 0
+                      span
+                        i.fa.fa-heart
+                        | #{help.receiveComforts.length}
+                      span
+                        i.fa.fa-arrow-circle-up
+                        | #{help.receiveUps.length}
+          ul.help-list.hide
+            if have_help_others.length == 0
+              p.hint-info 还没有帮助过其他人！
+            if have_help_others.length>0
+              each help in have_help_others
+                li(id="#{help._id}",class="#{help.haveImg}",data-help-id="#{help._id}")
+                  span.finish-tag 已完成
+                  if help.haveImg
+                    a.wrap-img(target="_blank",href="")
+                      img(src="#{help.coverImgPath}")
+                  .content
+                    .author
+                      a.avatar(target="_blank",href="/student/personal_home/"+help.publisher._id)
+                        img(src="#{help.publisher.avatar}",alt="")
+                      .name
+                        a.blue-link(target="_blank",href="/student/personal_home/"+help.publisher._id) #{help.publisher.nickname}
+                        span.time #{help.meta.createAt}
+                    a.title(target="_blank",href="/help/detail/"+help._id) #{help.title}
+                    - var filterImg = /<img.+?>/g;
+                    - var newContent = help.content.replace(filterImg,'');
+                    p.abstract !{newContent.slice(0,100)}...
+                    .meta
+                      a(target="_blank",href="/help/detail/"+help._id)
+                        i.fa.fa-eye
+                        | #{help.pv}
+                      a(target="_blank",href="/help/detail/"+help._id+"#comments")
+                        i.fa.fa-comment
+                        | 0
+                      span
+                        i.fa.fa-heart
+                        | #{help.receiveComforts.length}
+                      span
+                        i.fa.fa-arrow-circle-up
+                        | #{help.receiveUps.length}
+            
+  script(src="/js/personalHome.js")

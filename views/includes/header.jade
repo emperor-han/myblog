@@ -1,0 +1,107 @@
+.navbar.navbar-default.navbar-fixed-top
+  if success
+    p.message.success-msg #{success}
+  if error
+    p.message.error-msg #{error}
+  .col-md-2
+    .navbar-header
+      a.navbar-brand(href="/") 校友互助
+  .col-md-4
+    ul.nav.navbar-nav
+      li
+        a(href="/") 首页
+      li
+        a(href="/help/rush_helps") 最急求助
+      li
+        a(href="/help/lost_and_found") 失物招领
+      li
+        a(href="#") 学长学姐
+  .col-md-3
+    form.navbar-form.navbar-left(action="/student/search" rol="search")
+      .form-group
+        input.search-input(type="text" placeholder="搜索",name="search_content")
+        a.search-btn(href="javascript:void(null);")
+          i.fa.fa-search
+  .col-md-2(style="line-height:50px")
+    if student
+      .dropdown
+        if (student.NSC_count+student.NSHI_count+student.NSCF_count+student.NSU_count)>0
+          span.number #{student.NSC_count+student.NSHI_count+student.NSCF_count+student.NSU_count}
+        a.avatar(href="/student/personal_home/"+student._id)
+          img(src="#{student.avatar}")
+        span #{student.nickname}
+        ul.dropdown-menu
+          li 
+            a(href="/student/personal_home/"+student._id) 
+              i.fa.fa-user
+              span 个人主页
+          li 
+            a(href="/student/info/"+student._id) 
+              i.fa.fa-cog
+              span 资料设置
+          li 
+            if (student.NSC_count+student.NSHI_count+student.NSCF_count+student.NSU_count)>0
+              span.number #{student.NSC_count+student.NSHI_count+student.NSCF_count+student.NSU_count}
+            a(href="/student/notification/"+student._id) 
+              i.fa.fa-bell
+              span 消息
+          li 
+            a(href="/student/signout") 
+              i.fa.fa-sign-out
+              span 退出
+    else
+      span
+        a(href="#" data-toggle="modal" data-target="#student_signin") 登录
+      span /
+      span
+        a(href="#" data-toggle="modal" data-target="#student_signup") 注册
+  .col-md-1
+    a(href="/help" style="line-height:50px").btn-lg.btn-success.btn-help 求助
+ .modal.fade#student_signin   
+    .modal-dialog
+        .modal-content
+          form.form-horizontal(method="POST",action="/student/signin")
+            .modal-header
+              button.close(data-dismiss="modal") X
+              h2.modal-title.text-center 学生登录
+            .modal-body
+              .form-group
+                label.col-md-3.text-right(for="username") 用户名
+                .col-md-9
+                  input.form-control#username(type="text",placeholder="请输入用户名",name="student[username]")
+              .form-group
+                label.col-md-3.text-right(for="password") 密码
+                .col-md-9
+                  input.form-control#password(type="password",placeholder="请输入密码",name="student[password]")
+            .modal-footer
+              button.btn.btn-primary(data-dismiss="modal") 关闭
+              button.btn.btn-success(type="submit") 登录
+  .modal.fade#student_signup   
+    .modal-dialog
+        .modal-content
+          p.notice-info.hide
+          form.form-horizontal#logup_form(method="POST",action="/student/signup")
+            .modal-header
+              button.close(data-dismiss="modal") X
+              h2.modal-title.text-center 学生注册
+            .modal-body
+              .form-group
+                label.col-md-3.text-right(for="school") 学校
+                .col-md-9
+                  input.form-control#school(type="text",placeholder="请输入学校",name="student[school]")
+              .form-group
+                label.col-md-3.text-right(for="nickname") 昵称
+                .col-md-9
+                  input.form-control#nickname(type="text",placeholder="请输入昵称(1-20个字符，汉字占两个字符！)",name="student[nickname]")
+              .form-group
+                label.col-md-3.text-right(for="logup_username") 用户名
+                .col-md-9
+                  input.form-control#logup_username(type="text",placeholder="请输入电话号码作为用户名",name="student[username]")
+              .form-group
+                label.col-md-3.text-right(for="logup_password") 密码
+                .col-md-9
+                  input.form-control#logup_password(type="password",placeholder="请输入密码(6-20个字符)",name="student[password]")
+            .modal-footer
+              button.btn.btn-primary(data-dismiss="modal") 关闭
+              button.btn.btn-success(type="submit") 注册
+script(src="/js/header.js")

@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .col-md-8.col-md-offset-2.main
+        form(action="/student/info/edit/"+student._id,method="POST",enctype='multipart/form-data')
+          table
+            thead
+              tr
+                th 个人资料
+            tbody
+              tr
+                td.top-line
+                  .avatar
+                    img#uploadPreview(src="#{student.avatar}")
+                td
+                  a.btn.btn-hollow
+                    input.get-id(type="hidden",data-studentid="#{student._id}")
+                    input.select-avatar#uploadImage(type="file",name="avatar")
+                    | 更改头像
+              tr
+                td.setting-title 昵称
+                td
+                  input.form-control(type="text",value="#{student.nickname}",name="nickname")
+              tr
+                td.setting-title 手机
+                td.setted
+                  p #{student.username}
+                  i.fa.fa-close
+                  span 未验证
+                  a.pull-right.verify.btn.btn-hollow 验证
+              tr
+                td.setting-title 性别
+                td
+                  input#sex_male(type="radio",name="sex" ,checked=(student.sex==1),value=1)
+                  label(for="sex_male") 男
+                  input#sex_female(type="radio",name="sex",checked=(student.sex==2),value=2)
+                  label(for="sex_female") 女
+                  input#sex_male(type="radio",name="sex",checked=(student.sex==0),value=0)
+                  label(for="sex_secret") 保密
+              tr
+                td.setting-title 个人简介
+                td
+                  textarea(name="brief") #{student.brief}
+          button.btn.btn-success(type="submit") 提交
+  script(src="/js/studentInfo.js")

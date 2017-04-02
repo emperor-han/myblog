@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+  .col-md-6.col-md-offset-3
+    .post
+      .article
+        h1.title #{lost.title}
+        .author
+          a.avatar(href="/student/personal_home/"+lost.publisher._id)
+            img(src="#{lost.publisher.avatar}")
+          .info
+            span.name 
+              a(href="/student/personal_home/"+lost.publisher._id) #{lost.publisher.nickname}
+            a.btn.btn-success.follow
+              i.fa.fa-plus
+              span 关注
+          if student && student._id.toString() == lost.publisher._id.toString()
+            .have_found.pull-right
+              button.no-found.btn.btn-primary(data-lost="#{lost._id}") 完成
+              <br />
+              span 如果该失物已找到失主，那么请点击这里。
+        .contact 联系方式： #{lost.contact}
+        .show-content
+          p !{lost.content.replace(/\r\n/g,'<br />')}
+      .follow-detail
+        .info
+          a.avatar(href="/student/personal_home/"+lost.publisher._id)
+            img(src="#{lost.publisher.avatar}")
+          a.btn.btn-success.follow
+            i.fa.fa-plus
+            span 关注
+          a.name(href="/student/personal_home/"+lost.publisher._id) #{lost.publisher.nickname}
+          if student
+            p 帮助了 0 人
+      
+                
+  script(src="/js/helpDetail.js")
+  script(src="/js/lostDetail.js")
+
+
+
+

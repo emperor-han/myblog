@@ -1,0 +1,89 @@
+extends ../layout
+
+block content
+  .container
+    .col-md-8
+      .slide-img-wrap
+        #outerWrapper
+          .img-wrapper(style="left:-630px")
+            ul#get-imgs.clearfix
+              li
+                img(src="/img/slideImg44.jpg",alt="4")
+              li
+                img(src="/img/slideImg11.jpg",alt="1")
+              li
+                img(src="/img/slideImg22.jpg",alt="2")
+              li
+                img(src="/img/slideImg33.jpg",alt="3")
+              li
+                img(src="/img/slideImg44.jpg",alt="4")
+              li
+                img(src="/img/slideImg11.jpg",alt="1")
+          #focus-circle
+            span.active
+            span
+            span
+            span
+        a.left#arrow-left
+          i.fa.fa-chevron-left.fa-1x.i-right
+        a.right#arrow-right
+          i.fa.fa-chevron-right.fa-1x.i-left
+      .list-container
+        ul.help-list
+          if helps
+            each help in helps
+              li(id="#{help._id}",class="#{help.haveImg}",data-help-id="#{help._id}")
+                if help.makeIt
+                  span.finish-tag 已完成
+                if help.haveImg
+                  a.wrap-img(target="_blank",href="")
+                    img(src="#{help.coverImgPath}")
+                .content
+                  if help.award
+                    .award-bar 奖励：#{help.award}
+                  .author
+                    a.avatar(target="_blank",href="/student/personal_home/"+help.publisher._id)
+                      img(src="#{help.publisher.avatar}",alt="")
+                    .name
+                      a.blue-link(target="_blank",href="/student/personal_home/"+help.publisher._id) #{help.publisher.nickname}
+                      span.time #{help.meta.createAt}
+                  a.title(target="_blank",href="/help/detail/"+help._id) #{help.title}
+                  - var filterImg = /<img.+?>/g;
+                  - var newContent = help.content.replace(filterImg,'');
+                  p.abstract !{newContent.slice(0,100)}...
+                  .meta
+                    a(target="_blank",href="/help/detail/"+help._id)
+                      i.fa.fa-eye
+                      | #{help.pv}
+                    a(target="_blank",href="/help/detail/"+help._id+"#comments")
+                      i.fa.fa-comment
+                      | #{help.comments_count}
+                    span
+                      i.fa.fa-heart
+                      | #{help.receiveComforts.length}
+                    span
+                      i.fa.fa-arrow-circle-up
+                      | #{help.receiveUps.length}
+      ul.pagination(data-all="#{allPages}",data-c="#{currentPage}")
+        li
+          a(href="/?p=#{+currentPage-1}") 上一页
+        - for(var i=0;i<5;i++){
+            li
+              a
+          -}
+        li
+          a(href="/?p=#{+currentPage+1}") 下一页
+    .col-md-3.aside.col-md-offset-1
+      //-.helper-rankings
+        .title 帮助者排名
+        ol.list
+          each helper in helpers
+            li
+              a.avatar(target="_blank",href="/student/personal_home/"+helper._id)
+                img(src="#{helper.avatar}",alt="")
+              a.name(target="_blank",href="/student/personal_home/"+helper._id) #{helper.nickname}
+              p 已帮助 #{helper.had_help} 个人
+
+
+  script(src="js/index.js")
+  script(src="js/pagination.js")

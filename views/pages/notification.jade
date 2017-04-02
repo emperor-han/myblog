@@ -1,0 +1,95 @@
+extends ../layout
+
+block content
+  .container.notification
+    .row
+      .aside
+        ul
+          li.active(data-index=0)
+            input.student-id(type="hidden",data-student-id="#{student._id}")
+            a#not_see_comments_count(data-comment-count=student.NSC_count,data-help-count=student.NSHI_count,data-comfort-count=student.NSCF_count,data-up-count=student.NSU_count)
+              i.fa.fa-comment
+              span 评论
+              if student.NSC_count>0
+                span.number#disappear #{student.NSC_count}
+          li(data-index=1)
+            a
+              i.fa.fa-heart
+              span 求助信息
+              if student.NSHI_count>0
+                span.number #{student.NSHI_count}
+          li(data-index=2)
+            a
+              i.fa.fa-heart
+              span 安慰
+              if student.NSCF_count>0
+                span.number #{student.NSCF_count}
+          li(data-index=3)
+            a
+              i.fa.fa-heart
+              span 顶
+              if student.NSU_count>0
+                span.number #{student.NSU_count}
+          li(data-index=4)
+            a
+              i.fa.fa-comment
+              span 关注
+      .col-md-8.col-md-offset-4.main
+        div.comment-box
+          .menu 收到的评论
+            span (未看)
+          ul.comment-list
+            if receiveComments.length>0
+              each comment in receiveComments
+                if comment
+                  li
+                    a.avatar(href="/student/personal_home/"+comment.send._id,target="_blank")
+                      img(src="#{comment.send.avatar}")
+                    .info
+                      .div
+                        a.student(href="/student/personal_home/"+comment.send._id) #{comment.send.nickname}
+                        span.comment-slogan 在评论
+                        a(href="/help/detail/"+comment.help._id) 《 #{comment.help.title} 》
+                        span.comment-slogan 中写了一条新评论
+                      .time #{comment.createAt} 
+                    p #{comment.content}
+                    .meta
+                      a.function-btn.reply
+                        i.fa.fa-comment
+                        span 回复
+                      a.function-btn(href="/help/detail/"+comment.help._id+"#comments")
+                        i.fa.fa-go
+                        span 查看对话
+              a.check_more 查看所有评论
+                  //-div.send-sub-comment.hide
+                    form.new-comment
+                      textarea(placeholder="写下你的评论")
+                      if student
+                        input.sub_comment_info(type="hidden",data-commentid="#{comment.whichComment._id}",data-receiver="#{comment.send._id}",data-publisher="#{student._id}")
+                      a.btn.pull-right.btn-send.sub-send 发送
+                      a.btn.pull-right.cancel 取消
+            else
+              .nothing 您没有未看的评论
+              a.check_more 查看所有评论
+        .helpinfo-box.hide
+          .menu 获得的帮助
+            span (未看)
+          ul.helper-list
+            .nothing 您没有未看的安慰
+            a.check_more 查看所有安慰
+        .comfort-box.hide
+          .menu 收到的安慰
+            span (未看)
+          ul.comfort-list
+            .nothing 您没有未看的安慰
+            a.check_more 查看所有安慰
+        .up-box.hide
+          .menu 收到的顶
+            span (未看)
+          ul.up-list
+            .nothing 您没有未看的顶
+            a.check_more 查看所有顶
+        .attention-box.hide
+          p 关注
+                      
+  script(src="/js/notification.js")

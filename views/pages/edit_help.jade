@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  .container
+    .col-md-12
+      .seek-help
+        form.form-horizontal(action="/help/publish?edit=true&id="+help._id,method="POST",enctype='multipart/form-data')
+          .form-group
+            label.control-label.col-md-3.text-right(for="seek_help_title") 标题
+            .col-md-7
+              input.form-control#seek_help_title(type="text" name="title" value="#{help.title}")
+          .form-group
+            label.control-label.col-md-3.text-right(for="seek_help_content") 求助内容
+            .col-md-7
+              textarea#seek_help_content.form-control(cols="13" rows="16" name="content") #{help.content}
+              input.help-add-img(type="file")
+              span 添加图片
+          .form-group
+            label.control-label.col-md-3.text-right(for="coverImg") 添加封面图片
+            .col-md-5
+              input#coverImg(type="file" name="coverImg")
+              span.add-coverImg 添加封片图片
+              //- 添加图片提示内容，还未实现
+              //-span.coverImg-info sdf
+          .form-group
+            label.control-label.col-md-3.text-right(for="helper_award") 奖励帮助者
+            .col-md-7
+              input.form-control#helper_award(type="text" name="award" value="#{help.award}")
+          .col-md-2.col-md-offset-10
+            button.btn-lg.btn-success(type="submit") 修改
+  script(src="/js/publish.js")
+  
+  
+

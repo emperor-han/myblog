@@ -1,0 +1,167 @@
+extends ../layout
+
+block content
+  .col-md-6.col-md-offset-3
+    .post
+      .article
+        h1.title #{help.title}
+        .author
+          a.avatar(href="/student/personal_home/"+help.publisher._id)
+            img(src="#{help.publisher.avatar}")
+            input.help-owner(type="hidden",data-help-owner="#{help.publisher._id}")
+          .info
+            span.name 
+              a(href="/student/personal_home/"+help.publisher._id) #{help.publisher.nickname}
+            a.btn.btn-success.follow
+              i.fa.fa-plus
+              span 关注
+            .meta
+              span.publish-time #{help.meta.createAt}
+              span.views-count 阅读 #{help.pv}
+              span.comments-count 评论 #{help.comments_count}
+              span.comforts-count 安慰 #{help.receiveComforts.length}
+              span.urgent-degree 急切度 #{help.receiveUps.length}
+        .show-content
+          p !{help.content.replace(/\r\n/g,'<br />')}
+      .follow-detail
+        .info
+          a.avatar(href="/student/personal_home/"+help.publisher._id)
+            img(src="#{help.publisher.avatar}")
+          a.btn.btn-success.follow
+            i.fa.fa-plus
+            span 关注
+          a.name(href="/student/personal_home/"+help.publisher._id) #{help.publisher.nickname}
+          if student
+            p 帮助了 0 人
+      if student && (student._id.toString() !== help.publisher._id.toString())
+        .choice-bottom
+          if help.makeIt
+            .helped.active
+                p
+                  | 已完成
+          else
+            if help.helpers.some(isExist)
+              .have-help
+                p
+                  | 正在帮助。。
+            else
+              .help
+                i.fa.fa-angellist
+                span 帮助
+          if help.receiveComforts.some(isExist)
+            .have-comfort
+              i.fa.fa-check
+              p
+                i.fa.fa-heart
+                span 安慰
+          else
+            .comfort
+              i.fa.fa-check.hide
+              p
+                i.fa.fa-heart
+                span 安慰
+          - function isExist(item){
+                - return item._id.toString() == student._id.toString();
+            - }
+          
+          if help.receiveUps.some(isExist)
+            .have-up
+              i.fa.fa-check
+              p
+                i.fa.fa-heart
+                span 顶
+          else
+            .up
+              i.fa.fa-check.hide
+              p
+                i.fa.fa-arrow-circle-up
+                span 顶
+        p.hint-info 如果你能帮助他，就点击”帮助“按钮。当对方确认得到帮助后，此求助将关闭。如果你不能帮助他，也可以点击”安慰“按钮安慰他，或者点击“顶”按钮，让更多的人来帮助他。
+      else if student
+        .comforter
+          span.tag 安慰
+          ul.comforter-list
+            if help.receiveComforts.length < 9
+              each comfort in help.receiveComforts
+                li
+                  a.avatar(href="/student/personal_home/"+comfort._id)
+                    img(src="#{comfort.avatar}")
+            else
+              - for(var i = 0;i<8;i++){
+                  li
+                    a.avatar(href="/student/personal_home/"+help.receiveComforts[i]._id)
+                      img(src="#{help.receiveComforts[i].avatar}")
+              -  }
+              span ...
+          span.comforter-info 共 #{help.receiveComforts.length} 人安慰过你
+        .up-people
+          span.tag 顶
+          ul.up-people-list
+            if help.receiveUps.length < 9
+              each up in help.receiveUps
+                li
+                  a.avatar(href="/student/personal_home/"+up._id)
+                    img(src="#{up.avatar}")
+            else
+              - for(var i = 0;i<8;i++){
+                  li
+                    a.avatar(href="/student/personal_home/"+help.receiveUps[i]._id)
+                      img(src="#{help.receiveUps[i].avatar}")
+              -  }
+              span ...
+          span.up-people-info 共 #{help.receiveUps.length} 人顶过你
+        .helpers
+          span.tag.help-tag 帮助
+        .helping
+          ul
+            each helper in help.helpers
+              li
+                a.avatar(href="/student/personal_home/"+helper._id)
+                  img(src="#{helper.avatar}")
+                a.helper-name(href="/student/personal_home/"+helper._id) #{helper.nickname}
+                span.helping-info ........正在帮助你.........
+                a.contact-helper 联系他
+                if help.makeIt
+                  a.btn.btn-blue.has-solve.has-solve-style 已解决
+                else
+                  a.btn.btn-blue.has-solve 已解决
+      .comment-list
+        div
+          form.new-comment.clearfix
+            if student
+              a.avatar(href="/student/personal_home/"+student._id)
+                img(src="#{student.avatar}")
+              textarea.new-info(placeholder="写下你的评论！")
+              input#new_comment_info(type="hidden",data-help="#{help._id}",data-publisher="#{student._id}",data-receiver="#{help.publisher._id}")
+              a.btn.btn-success.pull-right.btn-send.main-send 发送
+            else
+              a.avatar(href="#")
+                img(src="")
+              .sign-container
+                a.btn.btn-sign(href="/signin") 登录
+                span 后发表评论和帮助他
+        #normal-comment-list.normal-comment-list
+          a(name="comments")
+          .top
+            span #{comments.length} 条评论
+          if comments
+            each comment in comments
+              .comment
+                div
+                  .author
+                    a.avatar(href="/student/personal_home/"+comment.publisher._id,target="_blank")
+                      img(src="#{comment.publisher.avatar}")
+                    .info
+                      a.name(href="/student/personal_home/"+comment.publisher._id,target="_blank") #{comment.publisher.nickname}
+                      .meta
+                        span #{comment.meta.createAt}
+                    .edit.pull-right.del 删除
+                  .comment-wrap
+                    p  #{comment.content}
+                    .tool-group
+                      
+                
+  script(src="/js/helpDetail.js")
+
+
+

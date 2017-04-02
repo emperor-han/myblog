@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+  .container
+    .col-md-8
+      .list-container
+        ul.help-list
+          each help in helps
+            li(id="#{help._id}",class="#{help.haveImg}",data-help-id="#{help._id}")
+              if help.makeIt
+                span.finish-tag 已完成
+              if help.haveImg
+                a.wrap-img(target="_blank",href="")
+                  img(src="#{help.coverImgPath}")
+              .content
+                .author
+                  a.avatar(target="_blank",href="/student/personal_home/"+help.publisher._id)
+                    img(src="#{help.publisher.avatar}",alt="")
+                  .name
+                    a.blue-link(target="_blank",href="/student/personal_home/"+help.publisher._id) #{help.publisher.nickname}
+                    span.time #{help.meta.createAt}
+                a.title(target="_blank",href="/help/detail/"+help._id) #{help.title}
+                - var filterImg = /<img.+?>/g;
+                - var newContent = help.content.replace(filterImg,'');
+                p.abstract !{newContent.slice(0,100)}...
+                .meta
+                  a(target="_blank",href="/help/detail/"+help._id)
+                    i.fa.fa-eye
+                    | #{help.viewsCount}
+                  a(target="_blank",href="/help/detail/"+help._id+"#comments")
+                    i.fa.fa-comment
+                    | #{help.commentsCount}
+                  span
+                    i.fa.fa-heart
+                    | #{help.receiveComforts.length}
+                  span
+                    i.fa.fa-arrow-circle-up
+                    | #{help.receiveUps.length}
+      ul.pagination(data-all="#{allPages}",data-c="#{currentPage}")
+        li
+          a(href="/help/rush_helps/?p=#{+currentPage-1}") 上一页
+        - for(var i=0;i<5;i++){
+            li
+              a
+          -}
+        li
+          a(href="/help/rush_helps/?p=#{+currentPage+1}") 下一页
+    .col-md-4
+  script(src="/js/rush_helps.js")

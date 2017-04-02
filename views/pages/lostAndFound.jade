@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+  .container.lost-page
+    a#add_lost_found(href="/help/lost_and_found/publish",alt="添加新的失物招领",title="添加新的失物招领")
+      i.fa.fa-plus
+    ul.lost-list.clearfix
+      each lost in losts
+        li
+          div
+            a(href="/help/lost_and_found/detail/"+lost._id)
+              img(src="#{lost.coverImgPath}")
+              h4.title #{lost.title}
+              .author
+                a.avatar(target="_blank",href="/student/personal_home/"+lost.publisher._id)
+                  img(src="#{lost.publisher.avatar}",alt="")
+                .name
+                  a.blue-link(target="_blank",href="/student/personal_home/"+lost.publisher._id) #{lost.publisher.nickname}
+                  <br />
+                  span.time #{lost.meta.updateAt}
+      li
+        div
+          a
+            img(src="/img/upload_e424f9546fd54496e5a2196050b8ad99.jpg")
+            h4.title 这是标题这是标题这是标题这是标题
+            .author
+              a.avatar(target="_blank",href="/student/personal_home/")
+                img(src="/img/default.jpg",alt="")
+              .name
+                a.blue-link(target="_blank",href="/student/personal_home/") nichehlsd
+                <br />
+                span.time shijan
+      li
+        div
+          a
+            img(src="/img/upload_e424f9546fd54496e5a2196050b8ad99.jpg")
+            h4.title 这是标题这是标题这是标题这是标题
+            .author
+              a.avatar(target="_blank",href="/student/personal_home/")
+                img(src="/img/default.jpg",alt="")
+              .name
+                a.blue-link(target="_blank",href="/student/personal_home/") nichehlsd
+                <br />
+                span.time shijan
+  script(src="/js/lost_and_found.js")
